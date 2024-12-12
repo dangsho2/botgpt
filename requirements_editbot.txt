@@ -1,2 +1,4 @@
 python-telegram-bot
 emoji
+asyncio
+asyncpg
