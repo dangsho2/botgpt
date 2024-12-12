@@ -2,7 +2,6 @@ import logging
 from telegram import Update
 from telegram.ext import Application, MessageHandler, ContextTypes, filters
 import emoji  # برای بررسی ایموجی‌ها
-import asyncio
 
 # توکن ربات
 TOKEN = '7899502015:AAHbkiEaoJG5cwUOQVUsnrrSGq7KdiGicWQ'
@@ -22,10 +21,12 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
+
 # تابع برای بررسی اینکه متن فقط شامل ایموجی است
 def contains_only_emoji(text: str) -> bool:
     stripped_text = text.strip()
     return all(char in emoji.EMOJI_DATA for char in stripped_text)
+
 
 # تابع مدیریت پیام‌ها
 async def handle_all_messages(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -96,19 +97,17 @@ async def handle_all_messages(update: Update, context: ContextTypes.DEFAULT_TYPE
         logger.error(f"Error handling message: {e}")
         await message.reply_text("خطایی رخ داد. لطفاً دوباره تلاش کنید.")
 
+
 # تابع اصلی
-async def main():
+def main():
     application = Application.builder().token(TOKEN).build()
 
     # هندلر برای تمامی پیام‌ها
     application.add_handler(MessageHandler(filters.ALL, handle_all_messages))
 
-    # اجرای ربات در حالت غیرمسدود کننده و مدیریت حلقه رویداد
-    try:
-        await application.run_polling(drop_pending_updates=True)
-    except Exception as e:
-        logger.error(f"Error in polling: {e}")
+    # اجرای ربات
+    application.run_polling()
 
-# اجرای برنامه به صورت async با استفاده از asyncio
+
 if __name__ == "__main__":
-    asyncio.run(main())
+    main()
