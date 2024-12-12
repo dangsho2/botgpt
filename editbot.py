@@ -2,6 +2,7 @@ import logging
 from telegram import Update
 from telegram.ext import Application, MessageHandler, ContextTypes, filters
 import emoji  # برای بررسی ایموجی‌ها
+import asyncio
 
 # توکن ربات
 TOKEN = '7899502015:AAHbkiEaoJG5cwUOQVUsnrrSGq7KdiGicWQ'
@@ -102,12 +103,12 @@ async def main():
     # هندلر برای تمامی پیام‌ها
     application.add_handler(MessageHandler(filters.ALL, handle_all_messages))
 
-    # اجرای ربات در حالت غیرمسدود کننده
+    # اجرای ربات در حالت غیرمسدود کننده و مدیریت حلقه رویداد
     try:
         await application.run_polling(drop_pending_updates=True)
     except Exception as e:
         logger.error(f"Error in polling: {e}")
 
+# اجرای برنامه به صورت async با استفاده از asyncio
 if __name__ == "__main__":
-    import asyncio
     asyncio.run(main())
